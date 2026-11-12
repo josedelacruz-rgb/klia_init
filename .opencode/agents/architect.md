@@ -30,6 +30,7 @@ permissions:
 
 | Directorio | Contenido |
 | --- | --- |
+| `.opencode` | Configuración de OpenCode |
 | `.ralph` | Metadatos del bucle Ralph |
 | `docs` | Documentación del proyecto |
 | `src` | Código fuente |

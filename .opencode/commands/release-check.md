@@ -8,7 +8,7 @@ Comprueba que el proyecto puede publicarse o entregarse sin defectos conocidos. 
 
 ## Contexto verificado
 - **Proyecto:** `opencode-project-init`
-- **Tipo:** opencode-plugin
+- **Tipo:** opencode-plugin, opencode-project
 - **Gestor de paquetes:** bun
 - **Finalidad declarada:** Plugin de OpenCode que analiza el proyecto y genera documentación y configuración profesional
 

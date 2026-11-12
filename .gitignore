@@ -13,5 +13,6 @@ coverage/
 
 # Logs y temporales
 *.log
+*.bak-*
 .DS_Store
 Thumbs.db

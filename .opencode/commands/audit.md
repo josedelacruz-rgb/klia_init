@@ -8,7 +8,7 @@ Audita el proyecto de forma objetiva y basada en evidencia. Alcance solicitado: 
 
 ## Contexto verificado
 - **Proyecto:** `opencode-project-init`
-- **Tipo:** opencode-plugin
+- **Tipo:** opencode-plugin, opencode-project
 - **Lenguajes:** TypeScript
 - **Gestor de paquetes:** bun
 

@@ -76,7 +76,26 @@ bun run typecheck   # tsc --noEmit
 bun test            # suite de pruebas
 ```
 
-El paquete es ESM (`"type": "module"`) y exporta el servidor del plugin por `dist/index.js`.
+El paquete es ESM (`"type": "module"`) y exporta dos entrypoints:
+
+| Export | Archivo | Uso |
+| --- | --- | --- |
+| `.` | `dist/index.js` | Plugin servidor: herramienta `project_init` y comando `/project-init`. |
+| `./tui` | `dist/tui.js` | Plugin TUI: comando `/project-init-tui` con diálogos nativos. |
+
+### Plugin TUI
+
+Los plugins de terminal se declaran en la configuración global de la TUI, no en `opencode.json(c)`:
+
+```jsonc
+// ~/.config/opencode/cli.json
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "plugins": ["C:/ruta/a/opencode-project-init"]
+}
+```
+
+Con el paquete publicado se usa su nombre (`"opencode-project-init"`). La TUI recarga `cli.json` automáticamente y registra `/project-init-tui`.
 
 ## Configuración
 
@@ -101,6 +120,18 @@ Parámetros de la herramienta:
 | `overwrite` | `string[]` (opcional) | Rutas relativas de archivos existentes autorizados a actualizar. |
 
 Los archivos existentes que no aparezcan en `overwrite` se omiten, aunque se pase `confirm: true`.
+
+### Uso de `/project-init-tui`
+
+El comando TUI ejecuta el mismo flujo sin depender de que el agente pregunte en el chat:
+
+1. Ejecuta `/project-init-tui`.
+2. Se abre un diálogo con el análisis real y la lista de archivos nuevos y existentes.
+3. Elige entre aplicar el plan, crear solo los archivos nuevos o cancelar.
+4. Cada archivo existente se autoriza individualmente; omitir uno no cancela el resto.
+5. Confirma la escritura y revisa el informe completo desde el diálogo final.
+
+Ningún diálogo escribe archivos por sí solo: la escritura ocurre tras la confirmación final.
 
 ## Archivos generados
 
@@ -227,7 +258,7 @@ Correcto: 0 errores, 0 avisos.
 
 - El análisis es estático: lee archivos y metadatos, no ejecuta el proyecto ni inspecciona estado en runtime.
 - La finalidad solo se toma de `package.json`/`pyproject.toml`; si no está declarada, se indica como no declarada en lugar de inventarla.
-- La autorización es conversacional: la herramienta exige `confirm` y `overwrite`, pero el diálogo lo conduce el agente.
+- La herramienta `project_init` exige `confirm` y `overwrite`; el comando `/project-init` delega el diálogo en el agente. Para autorizaciones nativas usa `/project-init-tui`, que requiere el plugin TUI declarado en `cli.json` (solo configuración global).
 - `opencode.json(c)` no se crea desde cero ni se le añaden plugins, modelos, MCP o permisos; solo se inserta `$schema` en una configuración existente que lo necesite.
 - La escritura usa `node:fs/promises` dentro del runtime Bun de OpenCode; no es una API de filesystem documentada del SDK.
 - La validación es estructural y de frontmatter, no una validación completa contra el JSON Schema de `opencode.ai/config.json`.
@@ -237,7 +268,8 @@ Correcto: 0 errores, 0 avisos.
 
 ```text
 src/
-  index.ts            Registro del plugin, comando /project-init y herramienta project_init
+  index.ts            Registro del plugin servidor, comando /project-init y herramienta project_init
+  tui.ts              Plugin TUI: comando /project-init-tui y diálogos de autorización
   project-detector.ts Recopilación de hechos del sistema de archivos
   project-analyzer.ts Interpretación de lenguajes, tipos, herramientas y arquitectura
   file-planner.ts     Decisión y renderizado de los archivos a generar
