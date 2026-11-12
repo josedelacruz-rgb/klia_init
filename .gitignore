@@ -1,0 +1,17 @@
+# Dependencias
+node_modules/
+
+# Artefactos de compilación
+dist/
+build/
+coverage/
+
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Logs y temporales
+*.log
+.DS_Store
+Thumbs.db

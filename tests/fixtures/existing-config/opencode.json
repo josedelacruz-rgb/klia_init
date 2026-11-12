@@ -1,0 +1,5 @@
+{
+  // Configuración existente del usuario: no debe destruirse.
+  "plugins": ["mi-plugin-local"],
+  "instructions": ["AGENTS.md"]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "fixture-ts-app",
+  "version": "0.1.0",
+  "description": "Aplicación TypeScript mínima usada como fixture de pruebas",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^3.0.0",
+    "eslint": "^9.0.0"
+  }
+}
